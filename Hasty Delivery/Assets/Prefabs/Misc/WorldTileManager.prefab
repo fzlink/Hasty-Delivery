@@ -46,4 +46,7 @@ MonoBehaviour:
   maxSpeed: 10
   tileTypes:
   - {fileID: 7057612000789098435, guid: b412ae1cd33ae12428a8df61d15d2963, type: 3}
-  - {fileID: 335222968768811503, guid: eeaddce215a11b547be3c575f18b4fe8, type: 3}
+  - {fileID: 8575891530588606289, guid: 15af26092489d534a95de863a10f0856, type: 3}
+  - {fileID: 6725531404641890312, guid: dc6cc5c9128c5c340acd5c1577546ebe, type: 3}
+  - {fileID: 4024928345927874347, guid: 6e39ef28527f6f349ba2727f676d5a2b, type: 3}
+  - {fileID: 7178544190068024195, guid: c4b383dc3549cbb4082e3de60adae72a, type: 3}

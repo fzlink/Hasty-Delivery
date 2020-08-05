@@ -31,7 +31,7 @@ using System.Collections.Generic;
 public class WorldTileManager : MonoBehaviour
 {
     /** Max Number of Tiles visible at one time */
-    static int MAX_TILES = 6;
+    static int MAX_TILES = 10;
 
     /** Max speed of tiles */
     [Range(0f, 50f)]
@@ -41,7 +41,7 @@ public class WorldTileManager : MonoBehaviour
     public GameObject[] tileTypes;
 
     /** Size of Tiles in z dimension */
-    private float tileSize = 7.62f;
+    private float tileSize = 10f;
 
     /** Current Speed of Tiles */
     private float speed;

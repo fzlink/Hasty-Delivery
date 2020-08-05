@@ -79,6 +79,7 @@ public class CargoThrowController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            //Time.fixedDeltaTime = 0.01f;
             launched = true;
             rigidbody.isKinematic = false;
             rigidbody.velocity = LAUNCH_VELOCITY;

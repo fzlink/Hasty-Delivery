@@ -53,6 +53,8 @@ public class Game : MonoBehaviour
     void Start()
     {
         this.tileManager.Init();
+        Vehicle vehicle = LoadManager.instance.GetVehicleObject();
+        Instantiate(vehicle);
     }
 
     /** On Update */
