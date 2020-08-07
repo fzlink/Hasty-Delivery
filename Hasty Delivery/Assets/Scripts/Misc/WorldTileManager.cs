@@ -27,6 +27,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class WorldTileManager : MonoBehaviour
 {
@@ -55,10 +56,23 @@ public class WorldTileManager : MonoBehaviour
     /** Initialize */
     public void Init()
     {
+        maxSpeed = LevelData.instance.roadSpeed;
         this.speed = 0f;
         this.tiles = new List<GameObject>();
         this.tilePool = new TilePool(this.tileTypes, MAX_TILES, this.transform);
         InitTiles();
+    }
+
+    private void Start()
+    {
+        CargoManager.instance.OnLevelFail += StopSpeed;
+        CargoManager.instance.OnLevelWin += StopSpeed;
+
+    }
+
+    private void StopSpeed()
+    {
+        speed = 0;
     }
 
     /** Increase speed by given amount */
@@ -94,7 +108,7 @@ public class WorldTileManager : MonoBehaviour
         GameObject tile = this.tilePool.GetTile(type);
 
         // position tile's z at 0 or behind the last item added to tiles collection
-        float zPos = this.tiles.Count == 0 ? 0f : this.tiles[this.tiles.Count - 1].transform.position.z + this.tileSize;
+        float zPos = this.tiles.Count == 0 ? -25f : this.tiles[this.tiles.Count - 1].transform.position.z + this.tileSize;
         tile.transform.Translate(0f, 0f, zPos);
         this.tiles.Add(tile);
     }

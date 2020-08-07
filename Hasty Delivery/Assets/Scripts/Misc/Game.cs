@@ -26,11 +26,12 @@
 
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class Game : MonoBehaviour
 {
     /** Speed Increase Value */
-    static float SPEED_INCREASE = .05f;
+    static float SPEED_INCREASE = .1f;
 
     /** Seeded Randomizer */
     static System.Random RND;
@@ -40,6 +41,9 @@ public class Game : MonoBehaviour
 
     /** TileManager */
     private WorldTileManager tileManager;
+
+    private bool canScroll = false;
+    public static bool gameIsOver;
 
     /** On Awake */
     void Awake()
@@ -52,14 +56,30 @@ public class Game : MonoBehaviour
     /** On Start */
     void Start()
     {
+        gameIsOver = false;
+        CargoManager.instance.OnLevelFail += StopScroll;
+        CargoManager.instance.OnLevelWin += StopScroll;
+        InputManager.instance.OnGameStarted += InitRoad;
         this.tileManager.Init();
         Vehicle vehicle = LoadManager.instance.GetVehicleObject();
         Instantiate(vehicle);
     }
 
+    private void InitRoad()
+    {
+        canScroll = true;
+    }
+
+    private void StopScroll()
+    {
+        canScroll = false;
+        gameIsOver = true;
+    }
+
     /** On Update */
     void Update()
     {
+        if (!canScroll) return;
         this.tileManager.IncreaseSpeed(SPEED_INCREASE);
         this.tileManager.UpdateTiles(RND);
     }

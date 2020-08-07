@@ -12,22 +12,42 @@ public enum Direction
 public class DeliveryGuy : MonoBehaviour
 {
     [SerializeField] private float throwSpeed;
+    [SerializeField] private float getCargoTime;
     private Cargo currentCargo;
+    private Animator animator;
+    public GameObject circleBarObject;
+    private bool isStopped;
+
+    private void Awake()
+    {
+        animator = GetComponentInChildren<Animator>();
+    }
 
     private void Start()
     {
         InputManager.instance.OnInput += OnInput;
+        CargoManager.instance.OnLevelWin += Stop;
+        CargoManager.instance.OnLevelFail += Stop;
         GetCargoItem();
     }
 
+    private void Stop()
+    {
+        isStopped = true;
+    }
 
     private void GetCargoItem()
     {
-        currentCargo = CargoManager.instance.GetCargoObject(transform);
+        if (!isStopped)
+        {
+            currentCargo = CargoManager.instance.GetCargoObject(transform);
+            currentCargo.GetComponent<Rigidbody>().detectCollisions = false;
+        }
     }
 
     private void OnInput(InputDirection inputDirection)
     {
+        if (isStopped) return;
         if(inputDirection != InputDirection.CenterInput)
         {
             ChangeSpriteDirection(inputDirection);
@@ -38,10 +58,13 @@ public class DeliveryGuy : MonoBehaviour
 
     private void PlayThrowAnimation()
     {
-        Animator animator = GetComponentInChildren<Animator>();
         animator.SetTrigger("Throw");
     }
 
+    public void PlayDyingAnimation()
+    {
+        animator.SetTrigger("Dying");
+    }
     private void ChangeSpriteDirection(InputDirection inputDirection)
     {
         SpriteRenderer SR = GetComponentInChildren<SpriteRenderer>();
@@ -66,11 +89,21 @@ public class DeliveryGuy : MonoBehaviour
             }
             currentCargo.transform.parent = null;
             Rigidbody cargoRB = currentCargo.GetComponent<Rigidbody>();
+            cargoRB.detectCollisions = true;
             cargoRB.isKinematic = false;
             cargoRB.AddForce(throwDirection * throwSpeed);
+            currentCargo.isThrown = true;
             currentCargo = null;
-
+            StartCoroutine(DelayForGetCargo());
         }
+    }
 
+    private IEnumerator DelayForGetCargo()
+    {
+        circleBarObject.gameObject.SetActive(true);
+        circleBarObject.GetComponentInChildren<CircleBar>().StartBar(getCargoTime);
+        yield return new WaitForSeconds(getCargoTime);
+        circleBarObject.gameObject.SetActive(false);
+        GetCargoItem();
     }
 }

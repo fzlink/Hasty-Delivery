@@ -16,11 +16,13 @@ public class InputManager : MonoBehaviour
     public static InputManager instance;
 
     public event Action<InputDirection> OnInput;
+    public event Action OnGameStarted;
 
-    public const float inputXThreshold = 0.4f;
+    public const float inputXThreshold = 0.333f;
 
     private bool canInput = true;
     private int fingerID = -1;
+    private bool gameStarted;
 
     private void Awake()
     {
@@ -34,10 +36,21 @@ public class InputManager : MonoBehaviour
     #endif
     }
 
+    private void Start()
+    {
+        CargoManager.instance.OnLevelFail += DisableInput;
+        CargoManager.instance.OnLevelWin += DisableInput;
+    }
+
+    private void DisableInput()
+    {
+        SetCanInput(false);
+    }
+
     private void Update()
     {
         if(EventSystem.current != null)
-            if (EventSystem.current.IsPointerOverGameObject(fingerID)) return;
+            if (gameStarted && EventSystem.current.IsPointerOverGameObject(fingerID)) return;
         if (!canInput) return;
     #if UNITY_ANDROID || UNITY_IOS
         ProcessTouch();
@@ -73,7 +86,13 @@ public class InputManager : MonoBehaviour
     private void SendInputDirection(InputDirection inputDirection)
     {
         print(inputDirection);
-        OnInput?.Invoke(inputDirection);
+        if (!gameStarted)
+        {
+            gameStarted = true;
+            OnGameStarted?.Invoke();
+        }
+        else
+            OnInput?.Invoke(inputDirection);
     }
 
     private InputDirection ProcessInputPosition(Vector3 inputPosition)

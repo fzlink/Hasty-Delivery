@@ -11,6 +11,8 @@ public class Vehicle : MonoBehaviour
     private float groundYPos;
     private bool onGround = true;
 
+    public event Action OnCrash;
+    public DeliveryGuy deliveryGuy;
 
 
     private void Start()
@@ -62,7 +64,10 @@ public class Vehicle : MonoBehaviour
     }
     private void Crash()
     {
-
+        GetComponent<Animator>().SetTrigger("Crash");
+        OnCrash?.Invoke();
+        deliveryGuy.PlayDyingAnimation();
+        CargoManager.instance.LevelFailed();
     }
 }
 

@@ -16,15 +16,25 @@ public enum AddressColor
 }
 public class CargoManager : MonoBehaviour
 {
-    public const int initialColorCount = 3;
+    public event Action OnMissThrow;
+    public event Action<int> OnPointThrow;
+    public event Action OnLevelWin;
+    public event Action OnLevelFail;
+
+
     public int currentColorCount;
     public static CargoManager instance;
     public Cargo cargoObject;
+
     private List<AddressColor> addressColors;
+    public List<Color> realColors;
 
-    public List<int> addColorThresholds;
-
+    private int currentPoints;
+    private int currentHealth;
+    System.Random random = new System.Random();
     [SerializeField] private float secondsBeforeDestroy;
+    [SerializeField] private float secondsBeforeSuccess;
+
     private void Awake()
     {
         if(instance == null)
@@ -35,6 +45,7 @@ public class CargoManager : MonoBehaviour
 
     private void Start()
     {
+        currentHealth = LevelData.instance.maximumHealth;
         if(addressColors == null)
             DetermineAddressColors();
     }
@@ -42,24 +53,18 @@ public class CargoManager : MonoBehaviour
     private void DetermineAddressColors()
     {
         addressColors = new List<AddressColor>();
-        currentColorCount = initialColorCount;
-        int levelIndex = LoadManager.instance.GetLevelIndex();
-        for (int i = 0; i < addColorThresholds.Count; i++)
-        {
-            if (levelIndex > addColorThresholds[i])
-                currentColorCount++;
-            else
-                break;
-        }
 
         Array values = Enum.GetValues(typeof(AddressColor));
-        System.Random random = new System.Random();
-        for (int i = 0; i < currentColorCount; i++)
+        int ind = 0;
+        while(ind < LevelData.instance.colorCount)
         {
             AddressColor randomAddressColor = (AddressColor)values.GetValue(random.Next(values.Length));
-            addressColors.Add(randomAddressColor);
+            if (!addressColors.Contains(randomAddressColor))
+            {
+                addressColors.Add(randomAddressColor);
+                ind++;
+            }
         }
-
     }
     public AddressColor GetRandomAddressColor()
     {
@@ -70,7 +75,6 @@ public class CargoManager : MonoBehaviour
 
     private AddressColor PickRandomColorFromAddressList()
     {
-        System.Random random = new System.Random();
         int colorIndex = random.Next(addressColors.Count);
         return addressColors[colorIndex];
     }
@@ -78,12 +82,24 @@ public class CargoManager : MonoBehaviour
     public Cargo GetCargoObject(Transform parent)
     {
         Cargo instantiatedCargo = Instantiate(cargoObject, parent.position + new Vector3(0,0.5f,-0.5f), Quaternion.identity,parent);
-        instantiatedCargo.addressColor = PickRandomColorFromAddressList();
+        AddressColor addressColor = PickRandomColorFromAddressList();
+        instantiatedCargo.addressColor = addressColor;
+        instantiatedCargo.GetComponent<Renderer>().material.color = realColors[(int)addressColor];
         return instantiatedCargo;
     }
 
-    public void DestroyCargo(Cargo cargo)
+    public void CheckAndDestroy(Cargo cargo)
     {
+        StartCoroutine(WaitForSuccess(cargo));
+    }
+
+    private IEnumerator WaitForSuccess(Cargo cargo)
+    {
+        yield return new WaitForSeconds(secondsBeforeSuccess);
+        if (!cargo.isDelivered)
+        {
+            MissThrow();
+        }
         StartCoroutine(DestroyWithDelay(cargo.gameObject));
     }
 
@@ -93,4 +109,30 @@ public class CargoManager : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void PointThrow()
+    {
+        currentPoints++;
+        OnPointThrow?.Invoke(currentPoints);
+        if(currentPoints >= LevelData.instance.pointsNeeded)
+        {
+            OnLevelWin?.Invoke();
+        }
+        print("Point Throw");
+    }
+
+    public void MissThrow()
+    {
+        currentHealth--;
+        OnMissThrow?.Invoke();
+        if(currentHealth <= 0)
+        {
+            //LevelFailed();
+        }
+        print("Miss Throw");
+    }
+
+    public void LevelFailed()
+    {
+        OnLevelFail?.Invoke();
+    }
 }
