@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
+  <string name="firebase_database_url" translatable="false">https://hasty-delivery.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">990580961843</string>
+  <string name="google_storage_bucket" translatable="false">hasty-delivery.appspot.com</string>
+  <string name="project_id" translatable="false">hasty-delivery</string>
+  <string name="google_api_key" translatable="false">AIzaSyBWWqfukJRdWC-hb5WKP3GrvzD4w7W33h0</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBWWqfukJRdWC-hb5WKP3GrvzD4w7W33h0</string>
+  <string name="google_app_id" translatable="false">1:990580961843:android:25b06a9827a23fdf132946</string>
+  <string name="default_web_client_id" translatable="false">990580961843-lkehbdjrpikauigumu30basiog0d1eu2.apps.googleusercontent.com</string>
+</resources>

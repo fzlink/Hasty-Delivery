@@ -19,8 +19,9 @@ public class LevelData : MonoBehaviour
     public const int initialPointsNeeded = 3;
     public const int pointIncrementFrequency = 5;
     public const int initialRoadSpeed = 15;
-    public const int maxRoadSpeed = 35;
+    public const int maxRoadSpeed = 30;
     public const int roadSpeedIncrementFrequency = 8;
+    public const int roadSpeedIncrementFactor = 2;
     public List<int> addColorThresholds;
 
 
@@ -52,7 +53,7 @@ public class LevelData : MonoBehaviour
 
     private void DetermineRoadSpeed()
     {
-        roadSpeed = (levelNo / roadSpeedIncrementFrequency) * 5;
+        roadSpeed = (levelNo / roadSpeedIncrementFrequency) * roadSpeedIncrementFactor;
         roadSpeed += initialRoadSpeed ;
         if (roadSpeed > maxRoadSpeed)
             roadSpeed = maxRoadSpeed;

@@ -27,6 +27,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HouseBothSidesTile
       objectReference: {fileID: 0}
+    - target: {fileID: 7057612000789098435, guid: b412ae1cd33ae12428a8df61d15d2963, type: 3}
+      propertyPath: m_TagString
+      value: HouseBothSidesTile
+      objectReference: {fileID: 0}
     - target: {fileID: 7057612000789098439, guid: b412ae1cd33ae12428a8df61d15d2963, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

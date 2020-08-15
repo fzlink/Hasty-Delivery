@@ -83,8 +83,7 @@ public class CargoManager : MonoBehaviour
     {
         Cargo instantiatedCargo = Instantiate(cargoObject, parent.position + new Vector3(0,0.5f,-0.5f), Quaternion.identity,parent);
         AddressColor addressColor = PickRandomColorFromAddressList();
-        instantiatedCargo.addressColor = addressColor;
-        instantiatedCargo.GetComponent<Renderer>().material.color = realColors[(int)addressColor];
+        instantiatedCargo.PaintCargo(addressColor, realColors[(int)addressColor]);
         return instantiatedCargo;
     }
 

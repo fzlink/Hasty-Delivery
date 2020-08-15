@@ -6,8 +6,17 @@ public class Cargo : MonoBehaviour
 {
     
     public AddressColor addressColor { get; set; }
+    public Color color { get; set; }
     public bool isDelivered;
     public bool isThrown;
+    public GameObject sticker;
+
+    public void PaintCargo(AddressColor addressColor, Color color)
+    {
+        this.addressColor = addressColor;
+        this.color = color;
+        GetComponent<Renderer>().material.color = color;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

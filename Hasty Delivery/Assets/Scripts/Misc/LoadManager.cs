@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Firebase;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,10 @@ public class LoadManager : MonoBehaviour
     private Vehicle vehicleObject;
 
     private int levelIndex = -1;
+
     void Awake()
     {
+
         if (instance == null)
         {
             instance = this;
@@ -22,6 +25,7 @@ public class LoadManager : MonoBehaviour
         LoadAssets();
         LoadStats();
     }
+
 
     private void LoadStats()
     {

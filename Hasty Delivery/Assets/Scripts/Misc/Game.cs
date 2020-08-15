@@ -33,6 +33,8 @@ public class Game : MonoBehaviour
     /** Speed Increase Value */
     static float SPEED_INCREASE = .1f;
 
+    public int[] seed;
+    public int selectedSeed;
     /** Seeded Randomizer */
     static System.Random RND;
 
@@ -49,7 +51,8 @@ public class Game : MonoBehaviour
     void Awake()
     {
         // 32 is just an arbitrary seed number. Could be anything.
-        RND = new System.Random(32);
+        selectedSeed = seed[UnityEngine.Random.Range(0, seed.Length)];
+        RND = new System.Random(selectedSeed);
         this.tileManager = TileHolder.GetComponent<WorldTileManager>();
     }
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "990580961843",
+    "firebase_url": "https://hasty-delivery.firebaseio.com",
+    "project_id": "hasty-delivery",
+    "storage_bucket": "hasty-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990580961843:android:25b06a9827a23fdf132946",
+        "android_client_info": {
+          "package_name": "com.Loy.HastyDelivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990580961843-lkehbdjrpikauigumu30basiog0d1eu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWWqfukJRdWC-hb5WKP3GrvzD4w7W33h0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990580961843-lkehbdjrpikauigumu30basiog0d1eu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

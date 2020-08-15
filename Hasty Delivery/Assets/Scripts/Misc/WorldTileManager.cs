@@ -40,6 +40,7 @@ public class WorldTileManager : MonoBehaviour
 
     /** Collection of Types of Tiles */
     public GameObject[] tileTypes;
+    GameObject cachedObstacleTile = null;
 
     /** Size of Tiles in z dimension */
     private float tileSize = 10f;
@@ -86,9 +87,11 @@ public class WorldTileManager : MonoBehaviour
     /** Update Tiles */
     public void UpdateTiles(System.Random rnd)
     {
+
         for (int i = tiles.Count - 1; i >= 0; i--)
         {
             GameObject tile = tiles[i];
+
             tile.transform.Translate(0f, 0f, -this.speed * Time.deltaTime);
 
             // If a tile moves behind the camera release it and add a new one
@@ -96,7 +99,28 @@ public class WorldTileManager : MonoBehaviour
             {
                 this.tiles.RemoveAt(i);
                 this.tilePool.ReleaseTile(tile);
-                int type = rnd.Next(0, this.tileTypes.Length);
+                int type = 0;
+                bool canAdd = false;
+                while (!canAdd)
+                {
+                    canAdd = true;
+                    type = rnd.Next(0, this.tileTypes.Length);
+                    if (tileTypes[type].tag == "ObstacleTile")
+                    {
+                        if (cachedObstacleTile != null)
+                        {
+                            canAdd = false;
+                        }
+                        else
+                        {
+                            cachedObstacleTile = tileTypes[type];
+                        }
+                    }
+                    else
+                    {
+                        cachedObstacleTile = null;
+                    }
+                }
                 AddTile(type);
             }
         }
